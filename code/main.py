@@ -52,9 +52,6 @@ def wakeWord():
         
     except KeyboardInterrupt:
         recorder.stop()
-    finally:
-        porcupine.delete()
-        recorder.delete()
 
 
 
@@ -64,20 +61,37 @@ def audioSearch():
         wakeWord()
         with sr.Microphone() as source:
             recognizer.adjust_for_ambient_noise(source)
-            audio = recognizer.listen(source)
+            
             print("listening..")
+
+            audio = recognizer.listen(source)
 
             try:
                 text = recognizer.recognize_google(audio).lower()
                 print(text)
-                if "exit" in text:
+                if "pause audio" in text:
+                    print("audio paused")
+                    p.mixer.music.pause()
+                elif "resume audio" in text:
+                    print("resuming")
+                    p.mixer.music.unpause()
+                elif "stop" in text:
+                    print("stopping audio")
+                    p.mixer.music.stop()
+                elif "quit app" in text:
                     print("exiting application")
-                    break
+                    if recorder.is_recording:
+                        recorder.stop()
+                        porcupine.delete()
+                        recorder.delete()
+                    exit()
+
                 audio_to_play = None
 
                 for title, audio_file in audio_files.items():
                     if title in text:
                         print("audio found, playing!")
+                        audio_to_play = audio_file
                         p.mixer.music.load(audio_to_play)
                         break
                 
@@ -86,12 +100,19 @@ def audioSearch():
                     p.mixer.music.play()
                 else:
                     print("couldn't find matching audio")
+            
+            except KeyboardInterrupt:
+                print("user interuppted operation")
 
             except Exception as e:
                 print("something went wrong! Error:", e)
+                
 
 print("hello?")
 audioSearch()
-
+# if recorder.is_recording:
+#     recorder.stop()
+#     porcupine.delete()
+#     recorder.delete()
 
 
