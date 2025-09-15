@@ -32,7 +32,7 @@ audio_files = {
 keywords=["bumblebee", "jarvis"]
 
 porcupine = pvporcupine.create(
-        access_key="REMOVED_API_KEY",
+        access_key="key",
         keywords = keywords)
 recorder = PvRecorder(device_index=-1, frame_length=porcupine.frame_length)
 
