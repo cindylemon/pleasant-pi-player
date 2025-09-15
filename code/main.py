@@ -1,4 +1,4 @@
-#import pygame as p
+import pygame as p
 import speech_recognition as sr
 import os
 import pvporcupine
@@ -11,6 +11,7 @@ from pydub import AudioSegment
 from pydub.playback import play
 
 recognizer = sr.Recognizer()
+p.mixer.init()
 
 
 audio_files = {
@@ -77,12 +78,12 @@ def audioSearch():
                 for title, audio_file in audio_files.items():
                     if title in text:
                         print("audio found, playing!")
-                        audio_to_play = AudioSegment.from_mp3(audio_file)
+                        p.mixer.music.load(audio_to_play)
                         break
                 
                 if audio_to_play:
-                    play(audio_to_play)
                     print("playing")
+                    p.mixer.music.play()
                 else:
                     print("couldn't find matching audio")
 
