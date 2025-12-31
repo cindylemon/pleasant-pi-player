@@ -4,9 +4,6 @@ import os
 import pvporcupine
 from pvrecorder import PvRecorder
 
-# Add ffmpeg to PATH before importing pydub
-os.environ["PATH"] += os.pathsep + r"C:\ffmpeg\bin"
-
 from pydub import AudioSegment
 from pydub.playback import play
 
