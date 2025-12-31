@@ -3,6 +3,7 @@ import speech_recognition as sr
 import os
 import pvporcupine
 from pvrecorder import PvRecorder
+import dotenv
 
 from pydub import AudioSegment
 from pydub.playback import play
@@ -26,10 +27,14 @@ audio_files = {
     "art of war 13":"audio/art_of_war_chinese_1506_librivox/artofwar_13_sun_64kb.mp3"
 }
 
+load_dotenv()
+
 keywords=["bumblebee", "jarvis"]
+key = os.geteng('PORCUPINE_KEY')
+
 
 porcupine = pvporcupine.create(
-        access_key="key",
+        access_key=key,
         keywords = keywords)
 recorder = PvRecorder(device_index=-1, frame_length=porcupine.frame_length)
 
