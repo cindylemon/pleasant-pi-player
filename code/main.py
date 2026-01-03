@@ -115,31 +115,24 @@ class PiPlayer:
             return None
 
 
-    def audioSearch():
-        while True:
-            wakeWord()
+    def audioSearch(self, command):
+        for book_name, book_data in self.audio_library.items():
+            if book_name in command:
+                for word in command.split():
+                    if word.isdigit():
+                        chapter = word
+                        if chapter in book_data["chapters"]:
+                            return book_data["chapters"][chapter], f"{book_name} chapter {chapter}"
+            if book_data["chapters"]:
+                first_chapter = list(book_data["chapters"].keys())[0]
+                return book_data["chapters"][first_chapter], f"{book_name} chapter {first_chapter}"
             
-
-                    audio_to_play = None
-
-                    for title, audio_file in audio_files.items():
-                        if title in text:
-                            print("audio found, playing!")
-                            audio_to_play = audio_file
-                            p.mixer.music.load(audio_to_play)
-                            break
-                    
-                    if audio_to_play:
-                        print("playing")
-                        p.mixer.music.play()
-                    else:
-                        print("couldn't find matching audio")
-                
-                except KeyboardInterrupt:
-                    print("user interuppted operation")
-
-                except Exception as e:
-                    print("something went wrong! Error:", e)
+        return None, None
+    
+    def handleCommand(self, command):
+        if not command:
+            return
+            
                     
 
 print("hello?")
